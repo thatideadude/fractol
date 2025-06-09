@@ -7,6 +7,16 @@
 # include <math.h>
 # include <unistd.h>
 
+# define ERROR_MSG "Invalid input.\nPlease type \"./fractol mandelbrot\" or \"./fractol julia <value> <value>\"\n"
+# define HEIGHT 800
+# define WIDTH	800
+
+typedef struct	s_complex
+{
+	double	x;
+	double	y;
+}				t_complex;
+
 typedef struct	s_img
 {
 	void	*img_ptr;
@@ -21,12 +31,26 @@ typedef struct	s_fractal
 	void	*mlx;
 	void	*mlx_win;
 	t_img	img;
+	char	*name;
+	double	outside;
 }				t_fractal;
 
 //str_tools
 int		ft_ncmp(char *s1, char *s2, int n);
 void	put_error(void);
 
-# define ERROR_MSG "Invalid input.\nPlease type \"./fractol mandelbrot\" or \"./fractol julia <value> <value>\"\n"
+//math_tools
+double	scale(double num, double new_min, double new_max, double old_max);
+t_complex	sum(t_complex z1, t_complex z2);
+t_complex	square(t_complex z);
+
+//starters
+void	fractal_start(t_fractal *fractal);
+
+//renderers
+void	render(t_fractal *fractal);
+void	render_pixel(int x, int y, t_fractal *fractal);
+void	print_pixel(int x, int y, t_img *img, int hue);
+
 
 #endif

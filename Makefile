@@ -1,6 +1,6 @@
 NAME	= fractol
 CFLAGS 	= -Wall -Wextra -Werror -Lminilibx-linux -lmlx_Linux -lX11 -lXext
-SRCS	= main.c str_tools.c
+SRCS	= main.c str_tools.c starters.c
 OBJS	= $(SRCS:.c=.o)
 
 all:	$(OBJS)
