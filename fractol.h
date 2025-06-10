@@ -37,12 +37,15 @@ typedef struct	s_fractal
 	int		res;
 	double	x_offset;
 	double	y_offset;
-	double	outside;
+	double	range;
+	double	x_julia;
+	double	y_julia;
 }				t_fractal;
 
 //str_tools
 int		ft_ncmp(char *s1, char *s2, int n);
 void	put_error(void);
+double atodouble(char *str);
 
 //math_tools
 double		scale(double num, double new_min, double new_max, double old_max);
@@ -58,8 +61,10 @@ void		render(t_fractal *fractal);
 void		render_pixel(int x, int y, t_fractal *fractal);
 void		print_pixel(int x, int y, t_img *img, int hue);
 void		start_data(t_fractal *fractal);
+int 		mouse_mov(int x, int y, t_fractal *fractal);
 
 //listeners
+int			click_handler(int button, int x, int y, t_fractal *fractal);
 int			key_handler(int keysym, t_fractal *fractal);
 int			close_win(t_fractal *fractal);
 

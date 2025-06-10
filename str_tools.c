@@ -21,3 +21,34 @@ void	put_error(void)
 	while (str && *str)
 		write(STDERR_FILENO, str++, 1);
 }
+
+double atodouble(char *str)
+{
+	long	interger;
+	double	decimal;
+	double	power;
+	int		sign;
+
+	interger = 0;
+	decimal = 0.0;
+	sign = 1;
+	power = 1;
+	while ((*str >= 9 && *str <= 13) || *str == ' ')
+		++str;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign *= -1;
+		++str;
+	}
+	while (*str >= '0' && *str <= '9')
+		interger = interger * 10 + *str++ - '0';
+	if (*str == '.')
+		++str;
+	while (*str >= '0' && *str <= '9')
+	{
+		power /= 10;
+		decimal = decimal + (*str++ - '0') * power;
+	}
+	return (interger + decimal * sign);
+}

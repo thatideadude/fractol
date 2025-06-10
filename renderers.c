@@ -1,5 +1,16 @@
 #include "fractol.h"
 
+int mouse_mov(int x, int y, t_fractal *fractal)
+{
+	if (!ft_ncmp(fractal->name, "julia", 5))
+	{
+		fractal->x_julia = scale(x, -2, 2, WIDTH) * fractal->range + fractal->x_offset;
+		fractal->y_julia = scale(y, 2, +2, HEIGHT) * fractal->range + fractal->y_offset;
+	}
+	render(fractal);
+	return (0);
+}
+
 void	print_pixel(int x, int y, t_img *img, int hue)
 {
 	int offset;
@@ -7,34 +18,49 @@ void	print_pixel(int x, int y, t_img *img, int hue)
 	offset = (y * img->line_len) + (x * (img->bpp / 8));
 	*(unsigned int *)(img->pixels_ptr + offset) = hue;
 }
-void	render_pixel(int x, int y, t_fractal *fractal)
+
+void	prepare_fractal(t_complex *z, t_complex *c, t_fractal *fractal)
 {
-	t_complex	z;
-	t_complex	c;
-	int			i;
-	int			hue;
-
-	i = 0;
-	z.x = 0.0;
-	z.y = 0.0;  
-	c.x = scale(x, -2, +2, WIDTH) + fractal->x_offset;
-	c.y = scale(y, +2, -2, HEIGHT) + fractal->y_offset;
-
-	while (i < fractal->res)
+	if (!ft_ncmp(fractal->name, "julia", 5))
 	{
-		z = sum(square(z), c) ;
-		if ((z.x * z.x) + (z.y * z.y) > 4)
-		{
-			hue = scale(i,  0xffdfff, 0xffafff, fractal->res);
-			print_pixel(x, y, &fractal->img, hue);
-			return ;
-		}
-		++i;
-		
+		c->x = fractal->x_julia;
+		c->y = fractal->y_julia;
 	}
-	print_pixel(x, y, &fractal->img, 0xafffaf);
+	else
+	{
+		c->x = z->x;
+		c->y = z->y;
+	}
 }
- 
+
+void render_pixel(int x, int y, t_fractal *fractal)
+{
+    t_complex	z;
+	t_complex	c;
+    t_complex	z2;
+    int			hue;
+	int			i;
+	
+	z.x = (scale(x, -2, 2, WIDTH) * fractal->range) + fractal->x_offset; 
+	z.y = (scale(y, 2, -2, HEIGHT) * fractal->range) + fractal->y_offset;
+
+	prepare_fractal(&z, &c, fractal);
+	i = -1;
+    while (++i < fractal->res)
+    {
+        z2.x = z.x * z.x;
+        z2.y = z.y * z.y;
+        if (z2.x + z2.y > 4) 
+        {
+            hue = scale(i, 0x000000, 0xffffff, fractal->res);
+            print_pixel(x, y, &fractal->img, hue);
+            return ;
+        }
+        z.y = 2 * z.x * z.y + c.y;
+        z.x = z2.x - z2.y + c.x;
+    }
+    print_pixel(x, y, &fractal->img, 0x00ffff);
+}
 void	render(t_fractal *fractal)
 {
 	int	x;
