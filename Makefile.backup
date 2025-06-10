@@ -1,5 +1,0 @@
-SRCS = *.c
-CFLAGS= cc -Wall -Werror -Wextra -Lminilibx-linux -lmlx_linux -lX11 -lXext -o fractol
-
-all: 
-	$(CC) $(CFLAGS)

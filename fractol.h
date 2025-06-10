@@ -4,6 +4,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include "minilibx-linux/mlx.h"
+# include <X11/X.h>
+# include <X11/keysym.h>
 # include <math.h>
 # include <unistd.h>
 
@@ -32,6 +34,9 @@ typedef struct	s_fractal
 	void	*mlx_win;
 	t_img	img;
 	char	*name;
+	int		res;
+	double	x_offset;
+	double	y_offset;
 	double	outside;
 }				t_fractal;
 
@@ -40,17 +45,22 @@ int		ft_ncmp(char *s1, char *s2, int n);
 void	put_error(void);
 
 //math_tools
-double	scale(double num, double new_min, double new_max, double old_max);
+double		scale(double num, double new_min, double new_max, double old_max);
 t_complex	sum(t_complex z1, t_complex z2);
 t_complex	square(t_complex z);
 
 //starters
-void	fractal_start(t_fractal *fractal);
+void		fractal_start(t_fractal *fractal);
+void		start_listening(t_fractal *fractal);
 
 //renderers
-void	render(t_fractal *fractal);
-void	render_pixel(int x, int y, t_fractal *fractal);
-void	print_pixel(int x, int y, t_img *img, int hue);
+void		render(t_fractal *fractal);
+void		render_pixel(int x, int y, t_fractal *fractal);
+void		print_pixel(int x, int y, t_img *img, int hue);
+void		start_data(t_fractal *fractal);
 
+//listeners
+int			key_handler(int keysym, t_fractal *fractal);
+int			close_win(t_fractal *fractal);
 
 #endif

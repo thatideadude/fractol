@@ -16,24 +16,23 @@ void	render_pixel(int x, int y, t_fractal *fractal)
 
 	i = 0;
 	z.x = 0.0;
-	z.y = 0.0;
-	c.x = scale(x, -2, +2, WIDTH);
-	c.y = scale(y, +2, -2, HEIGHT);
+	z.y = 0.0;  
+	c.x = scale(x, -2, +2, WIDTH) + fractal->x_offset;
+	c.y = scale(y, +2, -2, HEIGHT) + fractal->y_offset;
 
-	while (i < 1024)
+	while (i < fractal->res)
 	{
-		z = sum(square(z), c);
+		z = sum(square(z), c) ;
 		if ((z.x * z.x) + (z.y * z.y) > 4)
 		{
-			hue = scale(i, 0x000000, 0xffffff, 1024);
+			hue = scale(i,  0xffdfff, 0xffafff, fractal->res);
 			print_pixel(x, y, &fractal->img, hue);
 			return ;
 		}
 		++i;
 		
 	}
-	//print_pixel(x, y, &fractal->img, 0x00ff99);
-	print_pixel(x, y, &fractal->img, 0x000000);
+	print_pixel(x, y, &fractal->img, 0xafffaf);
 }
  
 void	render(t_fractal *fractal)
