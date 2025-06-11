@@ -1,18 +1,27 @@
-NAME	= fractol
-CFLAGS 	= -Wall -Wextra -Werror -Lminilibx-linux -lmlx_Linux -lX11 -lXext
-SRCS	= main.c str_tools.c starters.c
-OBJS	= $(SRCS:.c=.o)
+NAME = fractol
 
-all:	$(OBJS)
-	gcc $(CFLAGS) $(OBJS) -o $(NAME)
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
 
-.c.o:
-	gcc $(CFLAGS) -c $< -o $@
+SRCS = listeners.c main.c math_tools.c renderers.c starters.c str_tools.c
+
+OBJS = $(SRCS:.c=.o)
+
+MLX_DIR = minilibx-linux
+MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -lX11 -lXext
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(MLX_FLAGS) -o $(NAME)
 
 clean:
-	rm -rf $(OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re
+

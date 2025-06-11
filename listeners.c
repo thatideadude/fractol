@@ -11,7 +11,6 @@ int	close_win(t_fractal *fractal)
 
 int key_handler(int keysym, t_fractal *fractal)
 {
-	printf("keysym: %d\n", keysym);
 	if (keysym == XK_Escape)
 		return (close_win(fractal));
 	if (keysym == XK_Left)
@@ -27,13 +26,17 @@ int key_handler(int keysym, t_fractal *fractal)
 	if (keysym == XK_x)
 		fractal->res *= 2;
 	render(fractal);
+	return (0);
 }
 
 int click_handler(int button, int x, int y, t_fractal *fractal)
 {
+	(void) x;
+	(void) y;
 	if (button == Button4)
 		fractal->range *= 1.05;
 	if (button == Button5)
 		fractal->range *= 0.95;
 	render(fractal);
+	return (0);
 }
