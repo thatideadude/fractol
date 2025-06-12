@@ -1,5 +1,28 @@
 #include "fractol.h"
 
+int mouse_mov(int x, int y, t_fractal *fractal)
+{
+//	if (!ft_ncmp(fractal->name, "julia", 5))
+//	{
+//		fractal->x_julia = scale(x, -2, 2, WIDTH) * fractal->range + fractal->x_offset;
+//		fractal->y_julia = scale(y, 2, +2, HEIGHT) * fractal->range + fractal->y_offset;
+//	}
+//	static int old_x = 100;
+//	static int old_y = 100; 
+	(void) fractal;
+	(void) x;
+	(void) y;
+//	if (x > old_x + 10
+//		fractal->x_offset += 0.5 * fractal->range;
+//	if (x < old_x - 10)
+//		fractal->x_offset -= 0.5 * fractal->range;
+//	if (y > old_y + 10)
+//		fractal->y_offset += 0.5 * fractal->range;
+//	if (y < old_y - 10)
+//		fractal->y_offset -= 0.5 * fractal->range;
+//	render(fractal);
+	return (0);
+}
 int	close_win(t_fractal *fractal)
 {
 	mlx_destroy_image(fractal->mlx, fractal->img.img_ptr);
@@ -14,17 +37,17 @@ int key_handler(int keysym, t_fractal *fractal)
 	if (keysym == XK_Escape)
 		return (close_win(fractal));
 	if (keysym == XK_Left)
-		fractal->x_offset += 0.5 * fractal->range;
-	if (keysym == XK_Right)
 		fractal->x_offset -= 0.5 * fractal->range;
+	if (keysym == XK_Right)
+		fractal->x_offset += 0.5 * fractal->range;
 	if (keysym == XK_Up)
-		fractal->y_offset -= 0.5 * fractal->range;
-	if (keysym == XK_Down)
 		fractal->y_offset += 0.5 * fractal->range;
+	if (keysym == XK_Down)
+		fractal->y_offset -= 0.5 * fractal->range;
 	if (keysym == XK_z)
-		fractal->res *= 2;
+		fractal->range *= 1.05;
 	if (keysym == XK_x)
-		fractal->res *= 2;
+		fractal->range *= 0.95;
 	render(fractal);
 	return (0);
 }

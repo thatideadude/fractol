@@ -17,7 +17,7 @@ void	start_listeners(t_fractal *fractal)
 
 void    start_data(t_fractal *fractal)
 {
-    fractal->res = 100;
+    fractal->res = 64;
     fractal->x_offset = 0.0;
     fractal->y_offset = 0.0;
     fractal->img.bpp = 0;
@@ -26,7 +26,6 @@ void    start_data(t_fractal *fractal)
     fractal->img.endian = 0;
     fractal->img.line_len = 0;
 	fractal->range = 1.0;
-	fractal->hue = 0xfa00fa;
 }
 
 void	fractal_start(t_fractal *fractal)

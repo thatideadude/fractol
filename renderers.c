@@ -1,16 +1,5 @@
 #include "fractol.h"
 
-int mouse_mov(int x, int y, t_fractal *fractal)
-{
-	if (!ft_ncmp(fractal->name, "julia", 5))
-	{
-		fractal->x_julia = scale(x, -2, 2, WIDTH) * fractal->range + fractal->x_offset;
-		fractal->y_julia = scale(y, 2, +2, HEIGHT) * fractal->range + fractal->y_offset;
-	}
-	render(fractal);
-	return (0);
-}
-
 void	print_pixel(int x, int y, t_img *img, int hue)
 {
 	int offset;
@@ -35,32 +24,40 @@ void	prepare_fractal(t_complex *z, t_complex *c, t_fractal *fractal)
 
 void render_pixel(int x, int y, t_fractal *fractal)
 {
-    t_complex	z;
-	t_complex	c;
-    t_complex	z2;
-    int			hue;
-	int			i;
-	
-	z.x = (scale(x, -2, 2, WIDTH) * fractal->range) + fractal->x_offset; 
-	z.y = (scale(y, 2, -2, HEIGHT) * fractal->range) + fractal->y_offset;
+    t_complex z;
+    t_complex c;
+    t_complex z2;
+    int i;
 
-	prepare_fractal(&z, &c, fractal);
-	i = -1;
+    z.x = (scale(x, -2, 2, WIDTH) * fractal->range) + fractal->x_offset;
+    z.y = (scale(y, 2, -2, HEIGHT) * fractal->range) + fractal->y_offset;
+    prepare_fractal(&z, &c, fractal);
+    i = -1;
     while (++i < fractal->res)
     {
         z2.x = z.x * z.x;
         z2.y = z.y * z.y;
-        if (z2.x + z2.y > 4) 
+        if (z2.x + z2.y > 4.0)
         {
-            hue = scale(i, 0x000000, 0xffffff, fractal->res);
-            print_pixel(x, y, &fractal->img, hue);
-            return ;
+			if ((int)z.y % 2 || (int) z.y % 2 || (int)z2.y % 2 || (int) z2.x % 2)
+			{
+            	fractal->hue = ((100 + (i * 4)) % 256 << 8) | (100 + (i * 4)) % 256;
+            	print_pixel(x, y, &fractal->img, fractal->hue);
+			}
+			else
+    			print_pixel(x, y, &fractal->img, 0xffffff);
+            return;
         }
         z.y = 2 * z.x * z.y + c.y;
         z.x = z2.x - z2.y + c.x;
     }
-    print_pixel(x, y, &fractal->img, 0x00ffff);
+	if (x % 2)
+    	print_pixel(x, y, &fractal->img, 0xffcdbd);
+	else
+    	print_pixel(x, y, &fractal->img, 0xfffffd);
 }
+
+
 void	render(t_fractal *fractal)
 {
 	int	x;

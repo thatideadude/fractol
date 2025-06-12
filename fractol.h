@@ -8,6 +8,7 @@
 # include <X11/keysym.h>
 # include <math.h>
 # include <unistd.h>
+# include <math.h>
 
 # define ERROR_MSG "Invalid input.\nPlease type \"./fractol mandelbrot\" or \"./fractol julia <value> <value>\"\n"
 # define HEIGHT 800
@@ -40,6 +41,8 @@ typedef struct	s_fractal
 	double	range;
 	double	x_julia;
 	double	y_julia;
+	double	hue;
+	int		frame;
 }				t_fractal;
 
 //str_tools
@@ -51,6 +54,7 @@ double atodouble(char *str);
 double		scale(double num, double new_min, double new_max, double old_max);
 t_complex	sum(t_complex z1, t_complex z2);
 t_complex	square(t_complex z);
+double ft_log2(double x);
 
 //starters
 void		fractal_start(t_fractal *fractal);
