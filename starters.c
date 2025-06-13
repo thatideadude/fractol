@@ -26,7 +26,7 @@ void    start_data(t_fractal *fractal)
     fractal->img.endian = 0;
     fractal->img.line_len = 0;
 	fractal->range = 1.0;
-	fractal->hue = 0xfa00fa;
+	fractal->hue = 0xffffff;
 }
 
 void	fractal_start(t_fractal *fractal)

@@ -39,22 +39,19 @@ void render_pixel(int x, int y, t_fractal *fractal)
         z2.y = z.y * z.y;
         if (z2.x + z2.y > 4.0)
         {
-			if ((int)z.y % 2 || (int) z.y % 2 || (int)z2.y % 2 || (int) z2.x % 2)
-			{
-            	fractal->hue = ((100 + (i * 4)) % 256 << 8) | (100 + (i * 4)) % 256;
+			fractal->hue = (40 + (i * 4)) % 256;
+			fractal->hue = (((int)(fractal->hue * 0.4 + 255 * 0.6) << 16) 
+				| (int)(fractal->hue * 0.2 + 255 * 0.8) << 8 
+				| (int)(fractal->hue * 0.4 + 255 * 0.6));
+            	//fractal->hue = ((100 + (i * 4)) % 256 << 16) | (100 + (i * 4)) % 256 << 16 
+						// | (100 + (i * 4)) % 256;
             	print_pixel(x, y, &fractal->img, fractal->hue);
-			}
-			else
-    			print_pixel(x, y, &fractal->img, 0xffffff);
             return;
         }
         z.y = 2 * z.x * z.y + c.y;
         z.x = z2.x - z2.y + c.x;
     }
-	if (x % 2)
-    	print_pixel(x, y, &fractal->img, 0xffcdbd);
-	else
-    	print_pixel(x, y, &fractal->img, 0xfffffd);
+	print_pixel(x, y, &fractal->img, 0xa500050);
 }
 
 
