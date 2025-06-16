@@ -8,9 +8,15 @@ int	close_win(t_fractal *fractal)
 	free(fractal->mlx);
 	exit(1);
 }
-int loop_hook(t_fractal *fractal)
+int trip_stop(t_fractal *fractal)
 {
-		fractal->color_offset = (fractal->color_offset + 2) % 256;
+		fractal->color_offset = 1;
+		render(fractal);
+	return (0);
+}
+int trip_start(t_fractal *fractal)
+{
+		fractal->color_offset = (fractal->color_offset + 10) % 256;
 		render(fractal);
 	return (0);
 }
@@ -32,7 +38,9 @@ int key_handler(int keysym, t_fractal *fractal)
 	if (keysym == XK_x)
 		fractal->range *= 0.95;  
 	if (keysym == XK_c)
-		mlx_loop_hook(fractal->mlx, loop_hook, fractal);
+		mlx_loop_hook(fractal->mlx, trip_start, fractal);
+	if (keysym == XK_v)
+		mlx_loop_hook(fractal->mlx, trip_stop, fractal);
 	render(fractal);
 	return (0);
 }
