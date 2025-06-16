@@ -1,5 +1,19 @@
 #include "fractol.h"
 
+double ft_sqrt(double n)
+{
+    double guess = n / 2.0;
+    double epsilon = 0.00001;
+
+    if (n <= 0)
+        return 0;
+
+    while ((guess * guess - n) > epsilon || (n - guess * guess) > epsilon)
+        guess = (guess + n / guess) / 2.0;
+
+    return guess;
+}
+
 double	scale(double num, double new_min, double new_max, double old_max)
 {
 	return ((new_max - new_min) * num / old_max + new_min);
@@ -21,13 +35,18 @@ double sin (double x){
     return cur;
 }
 
-double pow_custom(double base, int exp)
+double ft_pow(double base, int exp)
 {
-    double result = 1.0;
-    for (int i = 0; i < exp; ++i)
+    double	result;
+	int		i; 
+
+	result = 1.0;
+	i = -1;
+    while (++i < exp)
         result *= base;
-    return result;
+    return (result);
 }
+
 double pow2(double x)
 {
     // Approximate 2^x using Taylor expansion for small x
@@ -51,7 +70,7 @@ double log_approx(double x)
     double y = x - 1;
     double result = 0.0;
     for (int i = 1; i <= 20; i++) {
-        double term = (i % 2 == 1 ? 1 : -1) * pow_custom(y, i) / i;
+        double term = (i % 2 == 1 ? 1 : -1) * ft_pow(y, i) / i;
         result += term;
     }
     return result;

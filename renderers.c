@@ -15,11 +15,45 @@ void	prepare_fractal(t_complex *z, t_complex *c, t_fractal *fractal)
 		c->x = fractal->x_julia;
 		c->y = fractal->y_julia;
 	}
-	else
+	else if (!ft_ncmp(fractal->name, "mandelbrot", 10))
 	{
 		c->x = z->x;
 		c->y = z->y;
 	}
+}
+
+void paint_fractal(t_complex z, t_fractal *fractal, int x, int y)
+{
+	double	mag;
+	int		shade;
+
+	mag = ft_sqrt(z.x * z.x + z.y * z.y);
+	shade = (int)(mag * 100) + fractal->color_offset % 256;
+	fractal->hue = (shade * shade * shade * shade * shade * shade * shade * 10 << 4) | ((shade - 0x00ffaf) / 100 << 8) | (shade * shade * shade * shade * shade) << 16;
+	print_pixel(x, y, &fractal->img, fractal->hue);
+}
+
+void paint_background(int x, int y, t_fractal *fractal, int r)
+{
+	double	norm_x;
+	double	norm_y;
+	double	dist;
+	int		g;
+	int		b;
+
+	norm_x = (double)x / WIDTH;
+	norm_y = (double)y / HEIGHT;
+	dist = ft_sqrt((norm_x - 0.5) * (norm_x - 0.5) + (norm_y - 0.5) * (norm_y - 0.5));
+	if (dist > 1.0)
+		dist = 1.0;
+	r = 250;
+	g = 233 + (int)(dist * 9);
+	b = 232 + (int)(dist * 10);
+	if (g > 255)
+		g = 255;
+	if (b > 255)
+		b = 255;
+	fractal->hue = (r << 16) | (g << 8) | b;
 }
 
 void render_pixel(int x, int y, t_fractal *fractal)
@@ -39,21 +73,19 @@ void render_pixel(int x, int y, t_fractal *fractal)
         z2.y = z.y * z.y;
         if (z2.x + z2.y > 4.0)
         {
-			fractal->hue = (40 + (i * 4)) % 256;
-			fractal->hue = (((int)(fractal->hue * 0.4 + 255 * 0.6) << 16) 
-				| (int)(fractal->hue * 0.2 + 255 * 0.8) << 8 
-				| (int)(fractal->hue * 0.4 + 255 * 0.6));
-            	//fractal->hue = ((100 + (i * 4)) % 256 << 16) | (100 + (i * 4)) % 256 << 16 
-						// | (100 + (i * 4)) % 256;
-            	print_pixel(x, y, &fractal->img, fractal->hue);
+			fractal->hue = (100 + (i * 256)) + fractal->color_offset % 256;
+			fractal->hue = (((int)(fractal->hue * 0.0005 + 255 * 0.9995) << 16) 
+				| (int)(fractal->hue * 0.0005 + 255 * 0.9995) << 8 
+				| (int)(fractal->hue * 0.0005 + 255 * 0.9995)) << 4;
+			paint_background(x, y, fractal, 0);
+            print_pixel(x, y, &fractal->img, fractal->hue + fractal->color_offset);
             return;
         }
         z.y = 2 * z.x * z.y + c.y;
         z.x = z2.x - z2.y + c.x;
     }
-	print_pixel(x, y, &fractal->img, 0xa500050);
+	paint_fractal(z, fractal, x, y);
 }
-
 
 void	render(t_fractal *fractal)
 {

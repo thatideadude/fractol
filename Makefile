@@ -1,6 +1,6 @@
 NAME = fractol
 
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 SRCS = listeners.c main.c math_tools.c renderers.c starters.c str_tools.c

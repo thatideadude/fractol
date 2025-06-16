@@ -36,6 +36,7 @@ typedef struct	s_fractal
 	t_img	img;
 	char	*name;
 	int		res;
+	int		color_offset;
 	double	x_offset;
 	double	y_offset;
 	double	range;
@@ -51,6 +52,8 @@ void	put_error(void);
 double atodouble(char *str);
 
 //math_tools
+double		ft_sqrt(double n);
+double		ft_pow(double base, int exp);
 double		scale(double num, double new_min, double new_max, double old_max);
 t_complex	sum(t_complex z1, t_complex z2);
 t_complex	square(t_complex z);

@@ -1,28 +1,5 @@
 #include "fractol.h"
 
-int mouse_mov(int x, int y, t_fractal *fractal)
-{
-//	if (!ft_ncmp(fractal->name, "julia", 5))
-//	{
-//		fractal->x_julia = scale(x, -2, 2, WIDTH) * fractal->range + fractal->x_offset;
-//		fractal->y_julia = scale(y, 2, +2, HEIGHT) * fractal->range + fractal->y_offset;
-//	}
-//	static int old_x = 100;
-//	static int old_y = 100; 
-	(void) fractal;
-	(void) x;
-	(void) y;
-//	if (x > old_x + 10
-//		fractal->x_offset += 0.5 * fractal->range;
-//	if (x < old_x - 10)
-//		fractal->x_offset -= 0.5 * fractal->range;
-//	if (y > old_y + 10)
-//		fractal->y_offset += 0.5 * fractal->range;
-//	if (y < old_y - 10)
-//		fractal->y_offset -= 0.5 * fractal->range;
-//	render(fractal);
-	return (0);
-}
 int	close_win(t_fractal *fractal)
 {
 	mlx_destroy_image(fractal->mlx, fractal->img.img_ptr);
@@ -30,6 +7,12 @@ int	close_win(t_fractal *fractal)
 	mlx_destroy_display(fractal->mlx);
 	free(fractal->mlx);
 	exit(1);
+}
+int loop_hook(t_fractal *fractal)
+{
+		fractal->color_offset = (fractal->color_offset + 2) % 256;
+		render(fractal);
+	return (0);
 }
 
 int key_handler(int keysym, t_fractal *fractal)
@@ -47,19 +30,30 @@ int key_handler(int keysym, t_fractal *fractal)
 	if (keysym == XK_z)
 		fractal->range *= 1.05;
 	if (keysym == XK_x)
-		fractal->range *= 0.95;
+		fractal->range *= 0.95;  
+	if (keysym == XK_c)
+		mlx_loop_hook(fractal->mlx, loop_hook, fractal);
 	render(fractal);
 	return (0);
 }
 
 int click_handler(int button, int x, int y, t_fractal *fractal)
 {
-	(void) x;
-	(void) y;
+	double mouse_re = scale(x, -2, 2, WIDTH) * fractal->range + fractal->x_offset;
+	double mouse_im = scale(y, 2, -2, HEIGHT) * fractal->range + fractal->y_offset;
+
 	if (button == Button4)
-		fractal->range *= 1.05;
-	if (button == Button5)
 		fractal->range *= 0.95;
+	else if (button == Button5)
+		fractal->range *= 1.05;
+	else
+		return (0);
+
+	double new_range = fractal->range;
+
+	fractal->x_offset = mouse_re - scale(x, -2, 2, WIDTH) * new_range;
+	fractal->y_offset = mouse_im - scale(y, 2, -2, HEIGHT) * new_range;
+
 	render(fractal);
 	return (0);
 }
