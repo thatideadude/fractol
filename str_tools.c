@@ -22,17 +22,13 @@ void	put_error(void)
 		write(STDERR_FILENO, str++, 1);
 }
 
-double atodouble(char *str)
+double	atodouble(char *str, int sign, double power)
 {
 	long	interger;
 	double	decimal;
-	double	power;
-	int		sign;
 
 	interger = 0;
 	decimal = 0.0;
-	sign = 1;
-	power = 1;
 	while ((*str >= 9 && *str <= 13) || *str == ' ')
 		++str;
 	if (*str == '-' || *str == '+')
