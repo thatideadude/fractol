@@ -3,7 +3,7 @@ NAME = fractol
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = listeners.c main.c math_tools.c renderers.c starters.c str_tools.c
+SRCS = listeners.c main.c math_tools.c renderers.c renderers_extras.c starters.c str_tools.c
 
 OBJS = $(SRCS:.c=.o)
 

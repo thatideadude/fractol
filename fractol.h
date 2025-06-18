@@ -61,12 +61,13 @@ void		fractal_start(t_fractal *fractal);
 void		start_listening(t_fractal *fractal);
 
 //renderers
+void		prepare_fractal(t_complex *z, t_complex *c, t_fractal *fractal);
 void		render(t_fractal *fractal);
 void		render_pixel(int x, int y, t_fractal *fractal);
 void		print_pixel(int x, int y, t_img *img, int hue);
 void		start_data(t_fractal *fractal);
 int			mouse_mov(int x, int y, t_fractal *fractal);
-int			loop_hook(void *param);
+void		render_hue(t_fractal *fractal, t_complex z);
 
 //listeners
 int			click_handler(int button, int x, int y, t_fractal *fractal);
